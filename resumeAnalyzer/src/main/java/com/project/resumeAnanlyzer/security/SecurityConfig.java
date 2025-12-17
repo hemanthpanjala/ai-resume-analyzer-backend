@@ -44,6 +44,7 @@ public class SecurityConfig {
                         // protected routes
                         .requestMatchers("/api/v1/analyses/**").authenticated()
                         .requestMatchers("/api/v1/dashboard/**").authenticated()
+                        .requestMatchers("/health").permitAll()
 
                         // everything else
                         .anyRequest().authenticated()
