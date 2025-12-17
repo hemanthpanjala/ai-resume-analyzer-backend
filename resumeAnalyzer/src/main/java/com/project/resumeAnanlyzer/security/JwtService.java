@@ -21,14 +21,12 @@ public class JwtService {
 
     public JwtService(
             @Value("${jwt.secret}") String secret,
-            @Value("${jwt.expirySeconds:7200}") long expirySeconds // default 2 hours
+            @Value("${jwt.expirySeconds:7200}") long expirySeconds
     ) {
-        // IMPORTANT: secret must be long enough for HS256 (>= 32 chars recommended)
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.expirySeconds = expirySeconds;
     }
 
-    // ✅ Used by AuthController
     public String createToken(UUID userId, String email) {
         Instant now = Instant.now();
 
@@ -41,7 +39,6 @@ public class JwtService {
                 .compact();
     }
 
-    // ✅ Used by JwtAuthFilter
     public UUID extractUserId(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)

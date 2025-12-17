@@ -20,37 +20,20 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
 
         http
-                // REST API -> stateless
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-                // CORS + disable CSRF for APIs
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
-
-                // auth rules
                 .authorizeHttpRequests(auth -> auth
-                        // preflight
+                        // Preflight must always pass
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // public auth
+                        // Public endpoints
+                        .requestMatchers("/health").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
 
-                        // resume upload extract
-                        .requestMatchers(HttpMethod.POST, "/api/resumes/extract-text").permitAll()
-
-                        // job roles (you said: not per user, so keep public)
-                        .requestMatchers("/api/v1/job-roles/**").permitAll()
-
-                        // protected routes
-                        .requestMatchers("/api/v1/analyses/**").authenticated()
-                        .requestMatchers("/api/v1/dashboard/**").authenticated()
-                        .requestMatchers("/health").permitAll()
-
-                        // everything else
-                        .anyRequest().authenticated()
+                        // LIGHT mode: everything else public (change later when stable)
+                        .anyRequest().permitAll()
                 )
-
-                // JWT filter
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

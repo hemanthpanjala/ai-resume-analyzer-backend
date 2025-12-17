@@ -26,7 +26,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-        return path.startsWith("/api/v1/auth/");
+
+        // Never filter auth endpoints
+        if (path.startsWith("/api/v1/auth/")) return true;
+
+        // Never filter preflight
+        return "OPTIONS".equalsIgnoreCase(request.getMethod());
     }
 
     @Override
@@ -37,6 +42,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         String header = request.getHeader("Authorization");
+
+        // No token? Just continue (don’t block public endpoints)
         if (header == null || !header.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
