@@ -18,8 +18,7 @@ public class CorsConfig {
         // Allow local + deployed frontend(s)
         config.setAllowedOriginPatterns(List.of(
                 "http://localhost:4200",
-                "https://*.onrender.com",
-                "https://*.vercel.app"
+                "https://ai-resume-analyzer-frontend-y0va.onrender.com"
         ));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
