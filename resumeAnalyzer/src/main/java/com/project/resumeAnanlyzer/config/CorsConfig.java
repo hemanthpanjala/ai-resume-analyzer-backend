@@ -15,18 +15,18 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
+        // Allow your frontend (and localhost for dev)
         config.setAllowedOrigins(List.of(
-                "http://localhost:4200",
-                "https://ai-resume-analyzer-frontend-y0va.onrender.com"
+                "https://ai-resume-analyzer-frontend-y0va.onrender.com",
+                "http://localhost:4200"
         ));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-
         config.setAllowedHeaders(List.of("*"));
         config.setExposedHeaders(List.of("*"));
 
-        // Keep true only if you might use cookies later; OK with exact origins
-        config.setAllowCredentials(true);
+        // IMPORTANT: you're not using cookies -> keep this FALSE
+        config.setAllowCredentials(false);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
