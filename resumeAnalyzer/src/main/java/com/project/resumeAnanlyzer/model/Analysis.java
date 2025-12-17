@@ -24,16 +24,16 @@ public class Analysis {
     @Column(nullable = false)
     private int matchScore;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String strengths;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String weaknesses;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String missingSkills;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String improvementSuggestions;
 
     @Column(nullable = false)
